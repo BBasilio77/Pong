@@ -266,7 +266,7 @@ class Pong {
 
         if (this.gamestate == INTRO) {
             this.ctx.font = "24px roboto"
-            this.ctx.fillText("First to 3 points wins TEST, press SPACE to start.", 240, 240) 
+            this.ctx.fillText("First to 3 points wins TEST2, press SPACE to start.", 240, 240) 
  
         }
         
