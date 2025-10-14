@@ -116,6 +116,9 @@ class Pong {
        //getting canvas + context
         const canvas = document.getElementById("pong")
         this.ctx = canvas.getContext("2d")
+
+            this.ctx.scale(2, 2)
+
         
         this.ctx.textAlign = "center"
         this.ctx.textBaseline = "middle"
@@ -252,6 +255,7 @@ class Pong {
     frame() {
 
             //clearing the canvas
+        this.ctx.fillStyle = "rgb"
         this.ctx.clearRect(0, 0, 480, 360)
 
         //drawing the paddles and the ball
