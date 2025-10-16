@@ -20,7 +20,7 @@ class Ball {
 
     }
     draw(ctx) {
-        ctx.fillStyle = "rgb(0 0 0)"
+        ctx.fillStyle = "rgb(255 255 255)"
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
         ctx.fill()
@@ -60,7 +60,7 @@ class Paddle {
 
     }
     draw(ctx) {
-        ctx.fillStyle = "rgb(255 140 0)"
+        ctx.fillStyle = "rgb(255 255 255)"
         ctx.fillRect(this.x - (this.width / 2),
             this.y - (this.height / 2),
             this.width, this.height)
@@ -255,8 +255,8 @@ class Pong {
     frame() {
 
             //clearing the canvas
-        
-        this.ctx.clearRect(0, 0, 480, 360)
+        this.ctx.fillStyle = "rgb(25 76 76)"
+        this.ctx.fillRect(0, 0, 480, 360)
 
         //drawing the paddles and the ball
         this.leftpaddle.draw(this.ctx)
