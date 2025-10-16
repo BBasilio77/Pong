@@ -255,7 +255,7 @@ class Pong {
     frame() {
 
             //clearing the canvas
-        this.ctx.fillStyle = "rgb(251 72 80)"
+        this.ctx.fillStyle = "rgb(25 76 76)"
         this.ctx.fillRect(0, 0, 480, 360)
 
         //drawing the paddles and the ball
