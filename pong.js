@@ -20,7 +20,7 @@ class Ball {
 
     }
     draw(ctx) {
-        ctx.fillStyle = "rgb(255 255 255)"
+        ctx.fillStyle = "rgb(0 0 0)"
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
         ctx.fill()
@@ -60,7 +60,7 @@ class Paddle {
 
     }
     draw(ctx) {
-        ctx.fillStyle = "rgb(255 255 255)"
+        ctx.fillStyle = "rgb(0 0 0)"
         ctx.fillRect(this.x - (this.width / 2),
             this.y - (this.height / 2),
             this.width, this.height)
@@ -197,17 +197,17 @@ class Pong {
     pong_keydown(event) {
         if (this.gamestate == PLAYING) {
             if (event.key == "ArrowDown") {
-                this.rightpaddle.dy = 10
+                this.rightpaddle.dy = 8
             }
             if (event.key == "ArrowUp") {
-                this.rightpaddle.dy = -10
+                this.rightpaddle.dy = -8
             }
             if (event.key == "s") {
-                this.leftpaddle.dy = 10
+                this.leftpaddle.dy = 8
         
             }
             if (event.key == "w") {
-                this.leftpaddle.dy = -10
+                this.leftpaddle.dy = -8
             }
 
         }
@@ -270,7 +270,7 @@ class Pong {
 
         if (this.gamestate == INTRO) {
             this.ctx.font = "24px roboto"
-            this.ctx.fillText("First to 3 points wins, press SPACE to start.", 240, 240) 
+            this.ctx.fillText("press SPACE to start.", 240, 240) 
  
         }
         
