@@ -1,4 +1,7 @@
 
+var ctx
+var canvas
+
 
 class Ball {
     x
@@ -11,16 +14,15 @@ class Ball {
     constructor(x, y) {
         this.x = x
         this.y = y
-        this.radius = 50
 
         this.dx = 2
         this.dy = 3    //You change the speed based on dx and dy
 
-        this.radius = 5
+        this.radius = 10
 
     }
     draw(ctx) {
-        ctx.fillStyle = "rgb(0 0 0)"
+        ctx.fillStyle = "rgb(255, 145, 0)"
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
         ctx.fill()
@@ -33,7 +35,7 @@ class Ball {
 
         //ball bounce
         
-        if ((this.y > (360 - this.radius)) || (this.y < (0 + this.radius))) {
+        if ((this.y > (canvas.height - this.radius)) || (this.y < (0 + this.radius))) {
             this.dy = -this.dy
         }
 
@@ -55,12 +57,12 @@ class Paddle {
         this.y = y
         this.dx = 0
         this.dy = 0
-        this.width = 10
-        this.height = 50
+        this.width = 20
+        this.height = 100
 
     }
     draw(ctx) {
-        ctx.fillStyle = "rgb(0 0 0)"
+        ctx.fillStyle = "rgba(255, 145, 0)"
         ctx.fillRect(this.x - (this.width / 2),
             this.y - (this.height / 2),
             this.width, this.height)
@@ -95,7 +97,7 @@ function circle_rect_sdf(circle, rect) {
 
 
 
-var ctx
+
 
 const INTRO = 0
 const PLAYING = 1
@@ -108,16 +110,19 @@ const PLAYER2 = 2
 
 
 const MAXSCORE = 3
+
+
 class Pong {
 
 
     constructor() {
        
        //getting canvas + context
-        const canvas = document.getElementById("pong")
+        canvas = document.getElementById("pong")
+        this.canvas = canvas
         this.ctx = canvas.getContext("2d")
 
-            this.ctx.scale(2, 2)
+        //this.ctx.scale(2, 2)
 
         
         this.ctx.textAlign = "center"
@@ -125,9 +130,10 @@ class Pong {
         this.ctx.font = "48px roboto"
     
         //creating the ball and the paddles
-        this.leftpaddle = new Paddle(20, 180)
-        this.rightpaddle = new Paddle(460, 180)
-        this.ball = new Ball(240, 180)
+        this.paddleoffset = 20
+        this.leftpaddle = new Paddle(this.paddleoffset, this.canvas.height/2)
+        this.rightpaddle = new Paddle(this.canvas.width - this.paddleoffset, this.canvas.height/2)
+        this.ball = new Ball(this.canvas.width/2, this.canvas.height/2)
         
         this.new_game()
         
@@ -158,17 +164,9 @@ class Pong {
     }
 
 
-
-    
-
-
-
-
-
-
     new_round() {
-        this.ball.x = 240   
-        this.ball.y = 180
+        this.ball.x = this.canvas.width/2  
+        this.ball.y = this.canvas.height/2
         this.ball.dx = (Math.random() * 2) + 1
         if (Math.random() > 0.5) {
            this.ball.dx *= -1 
@@ -255,8 +253,8 @@ class Pong {
     frame() {
 
             //clearing the canvas
-        this.ctx.fillStyle = "rgb(251 72 80)"
-        this.ctx.fillRect(0, 0, 480, 360)
+        this.ctx.fillStyle = "rgb(0, 0, 0)"
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
         //drawing the paddles and the ball
         this.leftpaddle.draw(this.ctx)
@@ -265,12 +263,14 @@ class Pong {
 
         //drawing the player scores
         this.ctx.font = "48px roboto"
-         this.ctx.fillText(`${this.player1}`, 30, 330)   
-            this.ctx.fillText(`${this.player2}`, 450, 330) 
+        this.ctx.textAlign = "center"
+        this.ctx.textBaseline = "middle"
+        this.ctx.fillText(`${this.player1}`, this.paddleoffset*2, this.canvas.height-(this.paddleoffset*2))
+        this.ctx.fillText(`${this.player2}`, this.canvas.width - (this.paddleoffset*2), this.canvas.height-(this.paddleoffset*2)) 
 
         if (this.gamestate == INTRO) {
             this.ctx.font = "24px roboto"
-            this.ctx.fillText("press SPACE to start.", 240, 240) 
+            this.ctx.fillText("press SPACE to start.", this.canvas.width/2, this.canvas.height*0.75) 
  
         }
         
@@ -294,7 +294,7 @@ class Pong {
                 this.ball.dx *= -1.2
             }
 
-            if (this.ball.x > (480 - this.ball.radius)) {
+            if (this.ball.x > (this.canvas.width - this.ball.radius)) {
                 this.end_round(PLAYER1)
             }
             if (this.ball.x < (0 + this.ball.radius)) {
@@ -304,28 +304,28 @@ class Pong {
            
         } else if (this.gamestate == SCORE1) {
              this.ctx.font = "48px roboto"
-            this.ctx.fillText("SCORE PLAYER 1!", 240, 180)  
+            this.ctx.fillText("SCORE PLAYER 1!", this.canvas.width/2, this.canvas.height*0.25)  
             this.ctx.font = "24px roboto"
-            this.ctx.fillText("Press SPACE to continue.", 240, 240)
+            this.ctx.fillText("Press SPACE to continue.", this.canvas.width/2, this.canvas.height*0.75)
 
             }
         else if (this.gamestate == SCORE2) {
             this.ctx.font = "48px roboto"
-            this.ctx.fillText("SCORE PLAYER 2!", 240, 180)  
+            this.ctx.fillText("SCORE PLAYER 2!", this.canvas.width/2, this.canvas.height*0.25)  
             this.ctx.font = "24px roboto"
-            this.ctx.fillText("Press space to continue.", 240, 240)    
+            this.ctx.fillText("Press space to continue.", this.canvas.width/2, this.canvas.height*0.75)
 
         }  
         else if (this.gamestate == GAMEOVER) {
                 if (this.player1 == MAXSCORE) {
-                    this.ctx.fillText("PLAYER 1 WINS!", 240, 180)
+                    this.ctx.fillText("PLAYER 1 WINS!", this.canvas.width/2, this.canvas.height*0.25)
                     this.ctx.font = "24px roboto"
-                    this.ctx.fillText("Press SPACE to reset the game.", 240, 240)
+                    this.ctx.fillText("Press SPACE to reset the game.", this.canvas.width/2, this.canvas.height*0.75)
             }
             if (this.player2 == MAXSCORE) {
-                this.ctx.fillText("PLAYER 2 WINS!", 240, 180)
+                this.ctx.fillText("PLAYER 2 WINS!", this.canvas.width/2, this.canvas.height*0.25)
                 this.ctx.font = "24px roboto"
-                this.ctx.fillText("Press SPACE to reset the game.", 240, 240)
+                this.ctx.fillText("Press SPACE to reset the game.", this.canvas.width/2, this.canvas.height*0.75)
                 
             }
             }
